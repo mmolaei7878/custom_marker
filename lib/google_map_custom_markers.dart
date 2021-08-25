@@ -151,14 +151,14 @@ class MapMarker {
   }
 
  static Future<BitmapDescriptor> downloadResizeCirclePicture(
-      {required String url, int imageSize = 50}) async {
+      {required String url, int imageSize = 50 ,double  radius = 100}) async {
     final File imageFile = await DefaultCacheManager().getSingleFile(url);
     final ui.PictureRecorder pictureRecorder = ui.PictureRecorder();
     final Canvas canvas = Canvas(pictureRecorder);
     final Path clipPath = Path();
     clipPath.addRRect(RRect.fromRectAndRadius(
         Rect.fromLTWH(0, 0, imageSize.toDouble(), imageSize.toDouble()),
-        Radius.circular(100)));
+        Radius.circular(radius)));
     canvas.clipPath(clipPath);
     final Uint8List imageUint8List = await imageFile.readAsBytes();
     final ui.Codec codec = await ui.instantiateImageCodec(imageUint8List);

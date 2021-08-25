@@ -11,7 +11,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MapMarker {
-  static Future<BitmapDescriptor> bitmapDescriptorFromSvgAsset(
+  static Future<BitmapDescriptor> svgAsset(
       {required String assetName,required BuildContext context,
      required double size,
       }) async {
@@ -37,8 +37,31 @@ class MapMarker {
     return BitmapDescriptor.fromBytes(bytes!.buffer.asUint8List());
   }
 
-  static Future<BitmapDescriptor>
-  bitmapDescriptorFromPictureAssetWithCenterText({
+  static Future<BitmapDescriptor> pictureAsset({
+    required String assetPath,
+    required double width,
+    required double height,
+  }) async {
+
+    ByteData imageFile = await rootBundle.load(assetPath);
+    final ui.PictureRecorder pictureRecorder = ui.PictureRecorder();
+    final Canvas canvas = Canvas(pictureRecorder);
+    final Uint8List imageUint8List = imageFile.buffer.asUint8List();
+    final ui.Codec codec = await ui.instantiateImageCodec(imageUint8List);
+    final ui.FrameInfo imageFI = await codec.getNextFrame();
+
+    paintImage(
+        canvas: canvas,
+        rect: Rect.fromLTWH(0, 0, width.toDouble(), height.toDouble()),
+        image: imageFI.image);
+
+    final _image = await pictureRecorder
+        .endRecording()
+        .toImage(width.toInt(), (height).toInt());
+    final data = await _image.toByteData(format: ui.ImageByteFormat.png);
+    return BitmapDescriptor.fromBytes(data!.buffer.asUint8List());
+  }
+  static Future<BitmapDescriptor> pictureAssetWithCenterText({
     required String assetPath,
     required String text,
     required Size size,
@@ -90,33 +113,93 @@ class MapMarker {
     return BitmapDescriptor.fromBytes(data!.buffer.asUint8List());
   }
 
-  static Future<BitmapDescriptor> bitmapDescriptorFromPictureAsset({
-    required String assetPath,
-    required double width,
-    required double height,
-  }) async {
-
+  static Future<BitmapDescriptor> pictureAssetCustom(
+      String assetPath,
+      {int size = 50,
+        bool addBorder = true,
+        Color borderColor = Colors.white,
+        double borderSize = 10,
+        String? title,
+        Color titleColor = Colors.white,
+        Color titleBackgroundColor = Colors.black}) async {
     ByteData imageFile = await rootBundle.load(assetPath);
+
     final ui.PictureRecorder pictureRecorder = ui.PictureRecorder();
     final Canvas canvas = Canvas(pictureRecorder);
+    final Paint paint = Paint()..color;
+    final TextPainter textPainter = TextPainter(
+      textDirection: TextDirection.ltr,
+    );
+    final double radius = size / 2;
+
+    //make canvas clip path to prevent image drawing over the circle
+    final Path clipPath = Path();
+    clipPath.addRRect(RRect.fromRectAndRadius(
+        Rect.fromLTWH(0, 0, size.toDouble(), size.toDouble()),
+        Radius.circular(100)));
+    clipPath.addRRect(RRect.fromRectAndRadius(
+        Rect.fromLTWH(0, size * 8 / 10, size.toDouble(), size * 3 / 10),
+        Radius.circular(100)));
+    canvas.clipPath(clipPath);
+
+    //paintImage
     final Uint8List imageUint8List = imageFile.buffer.asUint8List();
     final ui.Codec codec = await ui.instantiateImageCodec(imageUint8List);
     final ui.FrameInfo imageFI = await codec.getNextFrame();
-
     paintImage(
         canvas: canvas,
-        rect: Rect.fromLTWH(0, 0, width.toDouble(), height.toDouble()),
+        rect: Rect.fromLTWH(0, 0, size.toDouble(), size.toDouble()),
         image: imageFI.image);
 
+    if (addBorder) {
+      //draw Border
+      paint..color = borderColor;
+      paint..style = PaintingStyle.stroke;
+      paint..strokeWidth = borderSize;
+      canvas.drawCircle(Offset(radius, radius), radius, paint);
+    }
+
+    if (title != null) {
+      if (title.length > 9) {
+        title = title.substring(0, 9);
+      }
+      //draw Title background
+      paint..color = titleBackgroundColor;
+      paint..style = PaintingStyle.fill;
+      canvas.drawRRect(
+          RRect.fromRectAndRadius(
+              Rect.fromLTWH(0, size * 8 / 10, size.toDouble(), size * 3 / 10),
+              Radius.circular(100)),
+          paint);
+
+      //draw Title
+      textPainter.text = TextSpan(
+          text: title,
+          style: TextStyle(
+            fontSize: radius / 2.5,
+            fontWeight: FontWeight.bold,
+            color: titleColor,
+          ));
+      textPainter.layout();
+      textPainter.paint(
+          canvas,
+          Offset(radius - textPainter.width / 2,
+              size * 9.5 / 10 - textPainter.height / 2));
+    }
+
+    //convert canvas as PNG bytes
     final _image = await pictureRecorder
         .endRecording()
-        .toImage(width.toInt(), (height).toInt());
+        .toImage(size, (size * 1.1).toInt());
     final data = await _image.toByteData(format: ui.ImageByteFormat.png);
+
+    //convert PNG bytes as BitmapDescriptor
     return BitmapDescriptor.fromBytes(data!.buffer.asUint8List());
   }
 
+
   static Future<BitmapDescriptor>
-  bitmapDescriptorFromCircleCanvasWithCenterText(
+  circleCanvasWithText(
       {required Size size,required String text, double fontSize = 15.0,Color circleColor = Colors.red,Color fontColor = Colors.black,FontWeight fontWeight = FontWeight.w500,}) async {
     final ui.PictureRecorder pictureRecorder = ui.PictureRecorder();
     final Canvas canvas = Canvas(pictureRecorder);
@@ -150,30 +233,6 @@ class MapMarker {
     return BitmapDescriptor.fromBytes(data!.buffer.asUint8List());
   }
 
- static Future<BitmapDescriptor> downloadResizeCirclePicture(
-      {required String url, int imageSize = 50 ,double  radius = 100}) async {
-    final File imageFile = await DefaultCacheManager().getSingleFile(url);
-    final ui.PictureRecorder pictureRecorder = ui.PictureRecorder();
-    final Canvas canvas = Canvas(pictureRecorder);
-    final Path clipPath = Path();
-    clipPath.addRRect(RRect.fromRectAndRadius(
-        Rect.fromLTWH(0, 0, imageSize.toDouble(), imageSize.toDouble()),
-        Radius.circular(radius)));
-    canvas.clipPath(clipPath);
-    final Uint8List imageUint8List = await imageFile.readAsBytes();
-    final ui.Codec codec = await ui.instantiateImageCodec(imageUint8List);
-    final ui.FrameInfo imageFI = await codec.getNextFrame();
-    paintImage(
-        canvas: canvas,
-        rect: Rect.fromLTWH(0, 0, imageSize.toDouble(), imageSize.toDouble()),
-        image: imageFI.image);
-    final _image = await pictureRecorder
-        .endRecording()
-        .toImage(imageSize, (imageSize * 1.1).toInt());
-    final data = await _image.toByteData(format: ui.ImageByteFormat.png);
-    return BitmapDescriptor.fromBytes(data!.buffer.asUint8List());
-  }
-
   static Future<BitmapDescriptor> downloadResizePicture(
       {required String url, int imageSize = 50}) async {
     final File imageFile = await DefaultCacheManager().getSingleFile(url);
@@ -192,5 +251,91 @@ class MapMarker {
     final data = await _image.toByteData(format: ui.ImageByteFormat.png);
     return BitmapDescriptor.fromBytes(data!.buffer.asUint8List());
   }
+
+  static Future<BitmapDescriptor> downloadResizePictureCustom(String imageUrl,
+      {int size = 150,
+        bool addBorder = false,
+        Color borderColor = Colors.white,
+        double borderSize = 10,
+        String? title,
+        Color titleColor = Colors.white,
+        Color titleBackgroundColor = Colors.black}) async {
+    final File imageFile = await DefaultCacheManager().getSingleFile(imageUrl);
+
+    final ui.PictureRecorder pictureRecorder = ui.PictureRecorder();
+    final Canvas canvas = Canvas(pictureRecorder);
+    final Paint paint = Paint()..color;
+    final TextPainter textPainter = TextPainter(
+      textDirection: TextDirection.ltr,
+    );
+    final double radius = size / 2;
+
+    //make canvas clip path to prevent image drawing over the circle
+    final Path clipPath = Path();
+    clipPath.addRRect(RRect.fromRectAndRadius(
+        Rect.fromLTWH(0, 0, size.toDouble(), size.toDouble()),
+        Radius.circular(100)));
+    clipPath.addRRect(RRect.fromRectAndRadius(
+        Rect.fromLTWH(0, size * 8 / 10, size.toDouble(), size * 3 / 10),
+        Radius.circular(100)));
+    canvas.clipPath(clipPath);
+
+    //paintImage
+    final Uint8List imageUint8List = await imageFile.readAsBytes();
+    final ui.Codec codec = await ui.instantiateImageCodec(imageUint8List);
+    final ui.FrameInfo imageFI = await codec.getNextFrame();
+    paintImage(
+        canvas: canvas,
+        rect: Rect.fromLTWH(0, 0, size.toDouble(), size.toDouble()),
+        image: imageFI.image);
+
+    if (addBorder) {
+      //draw Border
+      paint..color = borderColor;
+      paint..style = PaintingStyle.stroke;
+      paint..strokeWidth = borderSize;
+      canvas.drawCircle(Offset(radius, radius), radius, paint);
+    }
+
+    if (title != null) {
+      if (title.length > 9) {
+        title = title.substring(0, 9);
+      }
+      //draw Title background
+      paint..color = titleBackgroundColor;
+      paint..style = PaintingStyle.fill;
+      canvas.drawRRect(
+          RRect.fromRectAndRadius(
+              Rect.fromLTWH(0, size * 8 / 10, size.toDouble(), size * 3 / 10),
+              Radius.circular(100)),
+          paint);
+
+      //draw Title
+      textPainter.text = TextSpan(
+          text: title,
+          style: TextStyle(
+            fontSize: radius / 2.5,
+            fontWeight: FontWeight.bold,
+            color: titleColor,
+          ));
+      textPainter.layout();
+      textPainter.paint(
+          canvas,
+          Offset(radius - textPainter.width / 2,
+              size * 9.5 / 10 - textPainter.height / 2));
+    }
+
+    //convert canvas as PNG bytes
+    final _image =
+    await pictureRecorder.endRecording().toImage(size, (size * 1.1).toInt());
+    final data = await _image.toByteData(format: ui.ImageByteFormat.png);
+
+    //convert PNG bytes as BitmapDescriptor
+    return BitmapDescriptor.fromBytes(data!.buffer.asUint8List());
+  }
+
+
+
+
 
 }

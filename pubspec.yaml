@@ -1,7 +1,7 @@
-name: google_map_custom_marker_icon
+name: custom_marker_icon
 description: A collection of icon marker for google_maps_flutter.
 version: 0.6.1
-homepage:
+homepage: https://github.com/mmolaei7878/google_map_custom_marker_icon
 
 environment:
   sdk: ">=2.12.0 <3.0.0"

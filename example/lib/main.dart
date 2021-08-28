@@ -1,4 +1,4 @@
-import 'package:google_map_custom_marker_icon/google_map_custom_marker_icon.dart';
+import 'package:custom_marker_icon/custom_marker_icon.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/material.dart';
 
@@ -37,7 +37,7 @@ class _HomePageState extends State<HomePage> {
           _markers.add(
             Marker(
               markerId: MarkerId('circleCanvasWithText'),
-              icon: await GoogleMapCustomMarkerIcon.circleCanvasWithText(
+              icon: await CustomMarkerIcon.circleCanvasWithText(
                   size: Size(80, 80),
                   text: 'Hi',
                   circleColor: Colors.red,
@@ -50,7 +50,7 @@ class _HomePageState extends State<HomePage> {
           _markers.add(
             Marker(
               markerId: MarkerId('downloadResizePicture'),
-              icon: await GoogleMapCustomMarkerIcon.downloadResizePicture(
+              icon: await CustomMarkerIcon.downloadResizePicture(
                   url:
                       'https://thegpscoordinates.net/photos/la/tehran_iran_5u679ezi8f.jpg',
                   imageSize: 150),
@@ -60,7 +60,7 @@ class _HomePageState extends State<HomePage> {
           _markers.add(
             Marker(
               markerId: MarkerId('downloadResizePictureCircle'),
-              icon: await GoogleMapCustomMarkerIcon.downloadResizePictureCircle(
+              icon: await CustomMarkerIcon.downloadResizePictureCircle(
                   'https://thegpscoordinates.net/photos/la/tehran_iran_5u679ezi8f.jpg',
                   size: 150,
                   addBorder: true,

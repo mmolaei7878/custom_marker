@@ -1,4 +1,4 @@
-# google_map_custom_marker_icon
+
 
 ## A collection of icon marker for google_maps_flutter
 <img src="https://user-images.githubusercontent.com/79679398/131233083-b58f740e-662a-485e-a860-16f50ec9cf5c.jpg" width="650">

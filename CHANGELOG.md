@@ -1,3 +1,3 @@
 ## 0.6.1
 
-* TODO: Describe initial release.
+* add download and round the image

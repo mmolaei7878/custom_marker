@@ -10,7 +10,7 @@ import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-class MapMarker {
+class GoogleMapCustomMarkers {
   static Future<BitmapDescriptor> svgAsset(
       {required String assetName,required BuildContext context,
      required double size,

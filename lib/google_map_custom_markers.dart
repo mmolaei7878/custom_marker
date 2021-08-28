@@ -1,4 +1,4 @@
-library google_map_custom_markers;
+library google_map_custom_marker_icon;
 
 import 'dart:async';
 import 'dart:io';
@@ -10,18 +10,19 @@ import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-class GoogleMapCustomMarkers {
-  static Future<BitmapDescriptor> svgAsset(
-      {required String assetName,required BuildContext context,
-     required double size,
-      }) async {
+class GoogleMapCustomMarkerIcon {
+  static Future<BitmapDescriptor> svgAsset({
+    required String assetName,
+    required BuildContext context,
+    required double size,
+  }) async {
     final mediaQuery = MediaQuery.of(context);
     // Read SVG file as String
     String svgString =
-    await DefaultAssetBundle.of(context).loadString(assetName);
+        await DefaultAssetBundle.of(context).loadString(assetName);
     // Create DrawableRoot from SVG String
     DrawableRoot svgDrawableRoot =
-    await svg.fromSvgString(svgString, svgString);
+        await svg.fromSvgString(svgString, svgString);
     // toPicture() and toImage() don't seem to be pixel ratio aware, so we calculate the actual sizes here
     double devicePixelRatio = mediaQuery.devicePixelRatio;
     double width =
@@ -42,7 +43,6 @@ class GoogleMapCustomMarkers {
     required double width,
     required double height,
   }) async {
-
     ByteData imageFile = await rootBundle.load(assetPath);
     final ui.PictureRecorder pictureRecorder = ui.PictureRecorder();
     final Canvas canvas = Canvas(pictureRecorder);
@@ -61,14 +61,14 @@ class GoogleMapCustomMarkers {
     final data = await _image.toByteData(format: ui.ImageByteFormat.png);
     return BitmapDescriptor.fromBytes(data!.buffer.asUint8List());
   }
-  static Future<BitmapDescriptor> pictureAssetWithCenterText({
-    required String assetPath,
-    required String text,
-    required Size size,
-    double fontSize = 15,
-    Color fontColor = Colors.black,
-    FontWeight fontWeight = FontWeight.w500
-  }) async {
+
+  static Future<BitmapDescriptor> pictureAssetWithCenterText(
+      {required String assetPath,
+      required String text,
+      required Size size,
+      double fontSize = 15,
+      Color fontColor = Colors.black,
+      FontWeight fontWeight = FontWeight.w500}) async {
     ByteData imageFile = await rootBundle.load(assetPath);
     final ui.PictureRecorder pictureRecorder = ui.PictureRecorder();
     final Canvas canvas = Canvas(pictureRecorder);
@@ -94,11 +94,13 @@ class GoogleMapCustomMarkers {
     final Uint8List imageUint8List = imageFile.buffer.asUint8List();
     final ui.Codec codec = await ui.instantiateImageCodec(imageUint8List);
     final ui.FrameInfo imageFI = await codec.getNextFrame();
+
     paintImage(
         fit: BoxFit.contain,
         alignment: Alignment.center,
         canvas: canvas,
-        rect: Rect.fromLTWH(0, 0, size.width.toDouble(), size.height.toDouble()),
+        rect:
+            Rect.fromLTWH(0, 0, size.width.toDouble(), size.height.toDouble()),
         image: imageFI.image);
     painter.layout();
     painter.paint(
@@ -113,15 +115,14 @@ class GoogleMapCustomMarkers {
     return BitmapDescriptor.fromBytes(data!.buffer.asUint8List());
   }
 
-  static Future<BitmapDescriptor> pictureAssetCustom(
-      String assetPath,
+  static Future<BitmapDescriptor> pictureAssetCustom(String assetPath,
       {int size = 50,
-        bool addBorder = true,
-        Color borderColor = Colors.white,
-        double borderSize = 10,
-        String? title,
-        Color titleColor = Colors.white,
-        Color titleBackgroundColor = Colors.black}) async {
+      bool addBorder = true,
+      Color borderColor = Colors.white,
+      double borderSize = 10,
+      String? title,
+      Color titleColor = Colors.white,
+      Color titleBackgroundColor = Colors.black}) async {
     ByteData imageFile = await rootBundle.load(assetPath);
 
     final ui.PictureRecorder pictureRecorder = ui.PictureRecorder();
@@ -197,10 +198,14 @@ class GoogleMapCustomMarkers {
     return BitmapDescriptor.fromBytes(data!.buffer.asUint8List());
   }
 
-
-  static Future<BitmapDescriptor>
-  circleCanvasWithText(
-      {required Size size,required String text, double fontSize = 15.0,Color circleColor = Colors.red,Color fontColor = Colors.black,FontWeight fontWeight = FontWeight.w500,}) async {
+  static Future<BitmapDescriptor> circleCanvasWithText({
+    required Size size,
+    required String text,
+    double fontSize = 15.0,
+    Color circleColor = Colors.red,
+    Color fontColor = Colors.black,
+    FontWeight fontWeight = FontWeight.w500,
+  }) async {
     final ui.PictureRecorder pictureRecorder = ui.PictureRecorder();
     final Canvas canvas = Canvas(pictureRecorder);
     final Paint paint = Paint()..color = circleColor;
@@ -208,7 +213,8 @@ class GoogleMapCustomMarkers {
 
     canvas.drawRRect(
         RRect.fromRectAndCorners(
-          Rect.fromLTWH(0.0, 0.0, size.width.toDouble(), size.height.toDouble()),
+          Rect.fromLTWH(
+              0.0, 0.0, size.width.toDouble(), size.height.toDouble()),
           topLeft: radius,
           topRight: radius,
           bottomLeft: radius,
@@ -219,7 +225,8 @@ class GoogleMapCustomMarkers {
     TextPainter painter = TextPainter(textDirection: TextDirection.ltr);
     painter.text = TextSpan(
       text: text,
-      style: TextStyle(fontSize: fontSize, color: fontColor,fontWeight: fontWeight),
+      style: TextStyle(
+          fontSize: fontSize, color: fontColor, fontWeight: fontWeight),
     );
 
     painter.layout();
@@ -227,7 +234,10 @@ class GoogleMapCustomMarkers {
         canvas,
         Offset((size.width * 0.5) - painter.width * 0.5,
             (size.height * .5) - painter.height * 0.5));
-    final img = await pictureRecorder.endRecording().toImage(size.width.toInt(), size.height.toInt());
+
+    final img = await pictureRecorder
+        .endRecording()
+        .toImage(size.width.toInt(), size.height.toInt());
     final data = await img.toByteData(format: ui.ImageByteFormat.png);
 
     return BitmapDescriptor.fromBytes(data!.buffer.asUint8List());
@@ -252,22 +262,19 @@ class GoogleMapCustomMarkers {
     return BitmapDescriptor.fromBytes(data!.buffer.asUint8List());
   }
 
-  static Future<BitmapDescriptor> downloadResizePictureCustom(String imageUrl,
-      {int size = 150,
-        bool addBorder = false,
-        Color borderColor = Colors.white,
-        double borderSize = 10,
-        String? title,
-        Color titleColor = Colors.white,
-        Color titleBackgroundColor = Colors.black}) async {
+  static Future<BitmapDescriptor> downloadResizePictureCircle(
+    String imageUrl, {
+    int size = 150,
+    bool addBorder = false,
+    Color borderColor = Colors.white,
+    double borderSize = 10,
+  }) async {
     final File imageFile = await DefaultCacheManager().getSingleFile(imageUrl);
 
     final ui.PictureRecorder pictureRecorder = ui.PictureRecorder();
     final Canvas canvas = Canvas(pictureRecorder);
     final Paint paint = Paint()..color;
-    final TextPainter textPainter = TextPainter(
-      textDirection: TextDirection.ltr,
-    );
+
     final double radius = size / 2;
 
     //make canvas clip path to prevent image drawing over the circle
@@ -275,9 +282,9 @@ class GoogleMapCustomMarkers {
     clipPath.addRRect(RRect.fromRectAndRadius(
         Rect.fromLTWH(0, 0, size.toDouble(), size.toDouble()),
         Radius.circular(100)));
-    clipPath.addRRect(RRect.fromRectAndRadius(
+    /* clipPath.addRRect(RRect.fromRectAndRadius(
         Rect.fromLTWH(0, size * 8 / 10, size.toDouble(), size * 3 / 10),
-        Radius.circular(100)));
+        Radius.circular(100))); */
     canvas.clipPath(clipPath);
 
     //paintImage
@@ -285,6 +292,8 @@ class GoogleMapCustomMarkers {
     final ui.Codec codec = await ui.instantiateImageCodec(imageUint8List);
     final ui.FrameInfo imageFI = await codec.getNextFrame();
     paintImage(
+        fit: BoxFit.cover,
+        alignment: Alignment.center,
         canvas: canvas,
         rect: Rect.fromLTWH(0, 0, size.toDouble(), size.toDouble()),
         image: imageFI.image);
@@ -297,45 +306,13 @@ class GoogleMapCustomMarkers {
       canvas.drawCircle(Offset(radius, radius), radius, paint);
     }
 
-    if (title != null) {
-      if (title.length > 9) {
-        title = title.substring(0, 9);
-      }
-      //draw Title background
-      paint..color = titleBackgroundColor;
-      paint..style = PaintingStyle.fill;
-      canvas.drawRRect(
-          RRect.fromRectAndRadius(
-              Rect.fromLTWH(0, size * 8 / 10, size.toDouble(), size * 3 / 10),
-              Radius.circular(100)),
-          paint);
-
-      //draw Title
-      textPainter.text = TextSpan(
-          text: title,
-          style: TextStyle(
-            fontSize: radius / 2.5,
-            fontWeight: FontWeight.bold,
-            color: titleColor,
-          ));
-      textPainter.layout();
-      textPainter.paint(
-          canvas,
-          Offset(radius - textPainter.width / 2,
-              size * 9.5 / 10 - textPainter.height / 2));
-    }
-
     //convert canvas as PNG bytes
-    final _image =
-    await pictureRecorder.endRecording().toImage(size, (size * 1.1).toInt());
+    final _image = await pictureRecorder
+        .endRecording()
+        .toImage(size, (size * 1.1).toInt());
     final data = await _image.toByteData(format: ui.ImageByteFormat.png);
 
     //convert PNG bytes as BitmapDescriptor
     return BitmapDescriptor.fromBytes(data!.buffer.asUint8List());
   }
-
-
-
-
-
 }

@@ -1,6 +1,6 @@
-name: google_map_custom_markers
-description: A new Flutter package.
-version: 0.0.1
+name: google_map_custom_marker_icon
+description: A package to add custom marker icons to google_map.
+version: 0.6.1
 homepage:
 
 environment:

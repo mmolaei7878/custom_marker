@@ -1,14 +1,13 @@
-# google_map_custom_markers
+# google_map_custom_marker_icon
 
-A new Flutter package.
+## A collection of icon marker for google_maps_flutter
+<img src="https://user-images.githubusercontent.com/79679398/131232777-4b5f817a-fb65-4abd-930c-fda7c2f0bb0d.jpg" width="650">|
+### svgAsset : a svg icon marker from your asset folder.
+### pictureAsset : a picture(png,jpeg,etc...) icon marker from your asset folder.
+### pictureAssetWithCenterText : a picture(png,jpeg,etc...) icon marker from your asset folder With Center text.
+### circleCanvasWithText : a circle canvas with center text.
+### downloadResizePicture : a picture(png,jpeg,etc...) icon marker from internet.
+### downloadResizePictureCircle : a rounded picture(png,jpeg,etc...) icon marker with border from internet.
 
-## Getting Started
 
-This project is a starting point for a Dart
-[package](https://flutter.dev/developing-packages/),
-a library module containing code that can be shared easily across
-multiple Flutter or Dart projects.
 
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.dev/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.

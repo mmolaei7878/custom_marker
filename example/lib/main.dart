@@ -1,4 +1,4 @@
-import 'package:google_map_custom_marker_icon/google_map_custom_markers.dart';
+import 'package:google_map_custom_marker_icon/google_map_custom_marker_icon.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/material.dart';
 

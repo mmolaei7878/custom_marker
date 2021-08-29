@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 
-class MyWidget extends StatelessWidget {
-  MyWidget(this.globalKeyMyWidget);
+class MyMarker extends StatelessWidget {
+  // declare a global key and get it trough Constructor
+
+  MyMarker(this.globalKeyMyWidget);
   final GlobalKey globalKeyMyWidget;
 
   @override
   Widget build(BuildContext context) {
+    // wrap your widget with RepaintBoundary and
+    // pass your global key to RepaintBoundary
     return RepaintBoundary(
       key: globalKeyMyWidget,
       child: Stack(

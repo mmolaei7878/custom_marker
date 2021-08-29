@@ -1,3 +1,7 @@
+## 0.6.3
+
+* add circle canvas with center text
+
 
 ## 0.6.2
 

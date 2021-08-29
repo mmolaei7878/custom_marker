@@ -1,4 +1,4 @@
-library google_map_custom_marker_icon;
+library marker_icon;
 
 import 'dart:async';
 import 'dart:io';

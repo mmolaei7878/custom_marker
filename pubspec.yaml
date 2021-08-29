@@ -1,6 +1,6 @@
 name: marker_icon
 description: A package to use local image, network image and svg file plus customization in google_maps_flutter marker icon.
-version: 0.6.3
+version: 0.7.1
 homepage: https://github.com/mmolaei7878/marker_icon
 
 environment:

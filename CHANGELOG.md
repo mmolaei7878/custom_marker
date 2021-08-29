@@ -1,3 +1,7 @@
+## 0.7.1
+
+* add image to marker icon
+
 ## 0.6.3
 
 * add circle canvas with center text

@@ -1,6 +1,6 @@
 
 
-### A package to use local image, network image and svg file plus customization google_maps_flutter marker icons.
+### A package to use local image, network image and svg file plus customization in google_maps_flutter marker icon.
  
 <img src="https://user-images.githubusercontent.com/79679398/131233083-b58f740e-662a-485e-a860-16f50ec9cf5c.jpg" width="650">
 

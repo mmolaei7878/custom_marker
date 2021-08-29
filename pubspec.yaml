@@ -1,7 +1,7 @@
 name: marker_icon
-description: A collection of icon marker for google_maps_flutter.
+description: A package to use local image, network image and svg file plus customization in google_maps_flutter marker icon.
 version: 0.6.1
-homepage: https://github.com/mmolaei7878/google_map_custom_marker_icon
+homepage: https://github.com/mmolaei7878/marker_icon
 
 environment:
   sdk: ">=2.12.0 <3.0.0"

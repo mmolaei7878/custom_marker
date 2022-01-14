@@ -1,3 +1,7 @@
+## 1.0.0
+
+* update packages
+
 ## 0.7.1
 
 * add image to marker icon

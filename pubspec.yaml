@@ -1,6 +1,6 @@
 name: marker_icon
 description: A package to convert Widget, Local image, Netwok image, Svg file to BitmapDescriptor which can use in google_maps_flutter icon marker.
-version: 0.7.1
+version: 1.0.0
 homepage: https://github.com/mmolaei7878/marker_icon
 
 environment:

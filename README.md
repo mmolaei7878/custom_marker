@@ -10,7 +10,7 @@ A package to convert Widget, Local image, Netwok image, Svg file to BitmapDescri
 
 ```dart
 dependencies:
-  marker_icon: ^0.7.1
+  marker_icon: ^1.0.0
 ```
 ## Add rounded marker icon with border from network image:
 
@@ -168,7 +168,7 @@ class MyMarker extends StatelessWidget {
 * widgetToMarker : an icon marker from your custom widget.
 * svgAsset : a svg icon marker from your asset folder.
 * pictureAsset : a picture(png,jpeg,etc...) icon marker from your asset folder.
-* pictureAssetWithCenterText : a picture(png,jpeg,etc...) icon marker from your asset folder With Center text.
+* pictureAssetWithCenterText : a picture(png,jpeg,etc...) icon marker from your asset folder With text.
 * circleCanvasWithText : a circle canvas with center text.
 * downloadResizePicture : a picture(png,jpeg,etc...) icon marker from internet.
 * downloadResizePictureCircle : a rounded picture(png,jpeg,etc...) icon marker with border from internet.

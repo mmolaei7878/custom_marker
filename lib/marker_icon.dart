@@ -1,4 +1,4 @@
-library marker_icon;
+library custom_marker;
 
 import 'dart:async';
 import 'dart:io';
@@ -55,7 +55,13 @@ class MarkerIcon {
     return BitmapDescriptor.fromBytes(data!.buffer.asUint8List());
   }
 
-  static Future<BitmapDescriptor> pictureAssetWithCenterText({required String assetPath, required String text, required Size size, double fontSize = 15, Color fontColor = Colors.black, FontWeight fontWeight = FontWeight.w500}) async {
+  static Future<BitmapDescriptor> pictureAssetWithCenterText(
+      {required String assetPath,
+      required String text,
+      required Size size,
+      double fontSize = 15,
+      Color fontColor = Colors.black,
+      FontWeight fontWeight = FontWeight.w500}) async {
     ByteData imageFile = await rootBundle.load(assetPath);
     final ui.PictureRecorder pictureRecorder = ui.PictureRecorder();
     final Canvas canvas = Canvas(pictureRecorder);
@@ -81,7 +87,12 @@ class MarkerIcon {
     final ui.Codec codec = await ui.instantiateImageCodec(imageUint8List);
     final ui.FrameInfo imageFI = await codec.getNextFrame();
 
-    paintImage(fit: BoxFit.contain, alignment: Alignment.center, canvas: canvas, rect: Rect.fromLTWH(0, 0, size.width.toDouble(), size.height.toDouble()), image: imageFI.image);
+    paintImage(
+        fit: BoxFit.contain,
+        alignment: Alignment.center,
+        canvas: canvas,
+        rect: Rect.fromLTWH(0, 0, size.width.toDouble(), size.height.toDouble()),
+        image: imageFI.image);
     painter.layout();
     painter.paint(canvas, Offset((size.width * 0.5) - painter.width * 0.5, (size.height * .5) - painter.height * 0.5));
 
@@ -135,7 +146,8 @@ class MarkerIcon {
     final Uint8List imageUint8List = await imageFile.readAsBytes();
     final ui.Codec codec = await ui.instantiateImageCodec(imageUint8List);
     final ui.FrameInfo imageFI = await codec.getNextFrame();
-    paintImage(canvas: canvas, rect: Rect.fromLTWH(0, 0, imageSize.toDouble(), imageSize.toDouble()), image: imageFI.image);
+    paintImage(
+        canvas: canvas, rect: Rect.fromLTWH(0, 0, imageSize.toDouble(), imageSize.toDouble()), image: imageFI.image);
     final _image = await pictureRecorder.endRecording().toImage(imageSize, (imageSize * 1.1).toInt());
     final data = await _image.toByteData(format: ui.ImageByteFormat.png);
     return BitmapDescriptor.fromBytes(data!.buffer.asUint8List());
@@ -158,7 +170,8 @@ class MarkerIcon {
 
     //make canvas clip path to prevent image drawing over the circle
     final Path clipPath = Path();
-    clipPath.addRRect(RRect.fromRectAndRadius(Rect.fromLTWH(0, 0, size.toDouble(), size.toDouble()), Radius.circular(100)));
+    clipPath
+        .addRRect(RRect.fromRectAndRadius(Rect.fromLTWH(0, 0, size.toDouble(), size.toDouble()), Radius.circular(100)));
     /* clipPath.addRRect(RRect.fromRectAndRadius(
         Rect.fromLTWH(0, size * 8 / 10, size.toDouble(), size * 3 / 10),
         Radius.circular(100))); */
@@ -168,7 +181,12 @@ class MarkerIcon {
     final Uint8List imageUint8List = await imageFile.readAsBytes();
     final ui.Codec codec = await ui.instantiateImageCodec(imageUint8List);
     final ui.FrameInfo imageFI = await codec.getNextFrame();
-    paintImage(fit: BoxFit.cover, alignment: Alignment.center, canvas: canvas, rect: Rect.fromLTWH(0, 0, size.toDouble(), size.toDouble()), image: imageFI.image);
+    paintImage(
+        fit: BoxFit.cover,
+        alignment: Alignment.center,
+        canvas: canvas,
+        rect: Rect.fromLTWH(0, 0, size.toDouble(), size.toDouble()),
+        image: imageFI.image);
 
     if (addBorder) {
       //draw Border

@@ -1,6 +1,6 @@
 ## 1.0.0
 
-* update packages
+* update packages & change name
 
 ## 0.7.1
 

@@ -30,10 +30,7 @@ dependencies:
 ```
 
 
-# Notes:
-## 1. You have to add your marker in async function.
-## 2. All other functions work the same above except widget to marker.
-
+## 1. All other functions work the same above except widget to marker.
 
 
 # Widget To Marker

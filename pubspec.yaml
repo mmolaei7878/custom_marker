@@ -1,6 +1,6 @@
 name: custom_marker
 description: A package to convert Widget, Local image, Netwok image, Svg file to BitmapDescriptor which can be used in google_maps_flutter icon marker.
-version: 1.0.0
+version: 1.0.2
 homepage: https://github.com/mmolaei7878/marker_icon
 
 environment:
@@ -11,8 +11,9 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_cache_manager: ^3.1.2
-  google_maps_flutter: ^2.0.6
-  flutter_svg: ^1.0.1
+  google_maps_flutter: ^2.2.3
+  flutter_svg: ^2.0.0+1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

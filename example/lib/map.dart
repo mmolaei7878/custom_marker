@@ -1,7 +1,8 @@
 import 'package:custom_marker/marker_icon.dart';
-import 'package:example/MyMarker.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+
+import 'MyMarker.dart';
 
 class WidgetToMarker extends StatefulWidget {
   const WidgetToMarker({Key? key}) : super(key: key);

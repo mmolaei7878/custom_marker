@@ -205,9 +205,9 @@ class MarkerIcon {
     return BitmapDescriptor.fromBytes(data!.buffer.asUint8List());
   }
 
-  static Future<BitmapDescriptor> widgetToIcon(GlobalKey globalKey) async {
+  static Future<BitmapDescriptor> widgetToIcon(GlobalKey globalKey, {double pixelRatio = 1.0}) async {
     RenderRepaintBoundary boundary = globalKey.currentContext?.findRenderObject() as RenderRepaintBoundary;
-    ui.Image image = await boundary.toImage();
+    ui.Image image = await boundary.toImage(pixelRatio: pixelRatio);
     ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
     return BitmapDescriptor.fromBytes(byteData!.buffer.asUint8List());
   }
